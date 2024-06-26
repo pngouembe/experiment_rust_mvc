@@ -1,14 +1,14 @@
 use std::io;
 
-use crate::{model::TodoListModel, view::TodoListView};
+use crate::{TodoListModel, TodoListView};
 
 pub struct TodoListPresenter {
-    view: TodoListView,
-    model: TodoListModel,
+    view: Box<dyn TodoListView>,
+    model: Box<dyn TodoListModel>,
 }
 
 impl TodoListPresenter {
-    pub fn new(view: TodoListView, model: TodoListModel) -> Self {
+    pub fn new(view: Box<dyn TodoListView>, model: Box<dyn TodoListModel>) -> Self {
         Self { view, model }
     }
 

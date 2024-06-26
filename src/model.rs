@@ -1,18 +1,18 @@
 use std::collections::HashMap;
 
-use crate::TodoItem;
+use crate::{TodoItem, TodoListModel};
 
 type Id = String;
 
 #[derive(Default)]
-pub struct TodoListModel(HashMap<Id, TodoItem>);
+pub struct HashMapTodoListModel(HashMap<Id, TodoItem>);
 
-impl TodoListModel {
-    pub fn get_tasks(&self) -> Vec<&TodoItem> {
+impl TodoListModel for HashMapTodoListModel {
+    fn get_tasks(&self) -> Vec<&TodoItem> {
         self.0.values().collect()
     }
 
-    pub fn add_task(&mut self, title: String) {
+    fn add_task(&mut self, title: String) {
         let id = format!("{}", self.0.len());
         let item = TodoItem {
             title,

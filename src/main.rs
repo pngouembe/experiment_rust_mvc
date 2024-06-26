@@ -1,8 +1,6 @@
-use std::fmt::{Display, Error, Formatter};
-
-use model::TodoListModel;
+use model::HashMapTodoListModel;
 use presenter::TodoListPresenter;
-use view::TodoListView;
+use view::ConsoleTodoListView;
 
 mod model;
 mod presenter;
@@ -13,21 +11,20 @@ struct TodoItem {
     completed: bool,
 }
 
-impl Display for TodoItem {
-    fn fmt(&self, f: &mut Formatter) -> Result<(), Error> {
-        let completion_str = match self.completed {
-            true => "- [X]",
-            false => "- [ ]",
-        };
-        write!(f, "{} {}", completion_str, self.title)
-    }
+trait TodoListView {
+    fn update_view(&self, tasks: &[&TodoItem]);
+}
+
+trait TodoListModel {
+    fn get_tasks(&self) -> Vec<&TodoItem>;
+    fn add_task(&mut self, title: String);
 }
 
 fn main() {
-    let view = TodoListView::default();
-    let model = TodoListModel::default();
+    let view = ConsoleTodoListView::default();
+    let model = HashMapTodoListModel::default();
 
-    let mut presenter = TodoListPresenter::new(view, model);
+    let mut presenter = TodoListPresenter::new(Box::new(view), Box::new(model));
 
     presenter.run();
 }
